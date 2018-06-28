@@ -14,36 +14,22 @@ import {connect, Provider} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
 class AppNotConected extends React.Component<AppProps, AppState> {
-    state = {
-        data: [],
-    };
-
-    fetchData = async (): Promise<fetch> => {
-        try {
-            const responseRaw = await fetch('https://swapi.co/api/people');
-            const {results: data} = await responseRaw.json();
-            this.setState({data});
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
     componentDidMount(): void {
-        this.fetchData();
-        this.props.actions.getData({hola:"mundo"});
+        this.props.actions.getData();
     }
 
     render(): React.Element<typeof React.Fragment> {
-        console.log(this.props.data);
         return (
             <React.Fragment>
             {
-                this.state.data.map((element, index) => (
+                this.props.info && this.props.info.data
+                ? this.props.info.data.map((element, index) => (
                     <Character
                         key={index}
                         {...element}
                     />
                 ))
+                : null
             }
             </React.Fragment>
         );
